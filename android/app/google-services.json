@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "77389885248",
+    "project_id": "sanyukt-7d18d",
+    "storage_bucket": "sanyukt-7d18d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:77389885248:android:2e408334ac08cc31b854a5",
+        "android_client_info": {
+          "package_name": "com.example.sanyukt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "77389885248-n3aibotpmsmlavdrn337el7joib4a23k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.sanyukt",
+            "certificate_hash": "b0faac931aa92a50a2c534dd916c2f3bc283d06d"
+          }
+        },
+        {
+          "client_id": "77389885248-549qdsdkdl78ulpfquvsf2v80hukrkah.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDImRM4DvyPp0l716oVji6c6UcUsokFqZg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "77389885248-549qdsdkdl78ulpfquvsf2v80hukrkah.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "77389885248-dsi5b4lu26p55o07mjmp01gc7lkpb5tm.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.sanyukt"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
