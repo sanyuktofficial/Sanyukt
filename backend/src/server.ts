@@ -5,7 +5,7 @@ import { env } from './config/env';
 async function bootstrap() {
   await connectMongo();
 
-  app.listen(env.port, () => {
+  app.listen(env.port, '0.0.0.0', () => {
     // eslint-disable-next-line no-console
     console.log(`Server listening on port ${env.port}`);
   });
