@@ -46,6 +46,7 @@ class SanyuktApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: buildLightTheme(),
         darkTheme: buildDarkTheme(),
+        themeMode: ThemeMode.system,
         routerConfig: buildRouterConfig(),
       ),
     );

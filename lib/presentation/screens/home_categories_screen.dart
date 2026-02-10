@@ -3,18 +3,20 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/app_theme.dart';
 import '../widgets/responsive_scaffold.dart';
-import 'audience/audience_categories_screen.dart';
 import 'business/business_type_selection_screen.dart';
 
-/// Light, relevant background images per category (Unsplash – replace with assets if needed).
+/// Background images per category (Unsplash – themed to category name).
 const Map<String, String> _categoryBackgroundImages = {
-  'AUDIENCE': 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800',
-  'BUSINESS': 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800',
-  'JOB / WORK': 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800',
-  'COMMUNITY': 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800',
-  'SPIRITUAL': 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800',
-  'MEDICAL': 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800',
-  'MATRIMONY': 'https://images.unsplash.com/photo-1519741497674-611481863552?w=800',
+  'Sanyukt Meter': 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800', // analytics / census
+  'Emergency Action': 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800', // medical / safety
+  'Sanyukt Varta': 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800', // news / broadcast
+  'Karya & Vyapar': 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800', // economic hub / business
+  'Spiritual Hub': 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800', // spiritual / temple
+  'Sanyukt Bazaar': 'https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=800', // marketplace / shopping
+  'Sanyukt Utsav': 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800', // sports / pilgrimage
+  'Sanyukt Pratibha': 'https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=800', // awards / academic
+  'Sanyukt Shiksha': 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800', // education / gurukul
+  'Sanyukt Bandhan': 'https://images.unsplash.com/photo-1519741497674-611481863552?w=800', // matrimony
 };
 
 class HomeCategoriesScreen extends StatelessWidget {
@@ -23,21 +25,47 @@ class HomeCategoriesScreen extends StatelessWidget {
   static const routeName = 'homeCategories';
 
   static const List<_CategoryData> _categories = [
-    // _CategoryData(
-    //   label: 'AUDIENCE',
-    //   subtitle: 'Connect with people',
-    //   routeName: AudienceCategoriesScreen.routeName,
-    // ),
     _CategoryData(
-      label: 'BUSINESS',
-      subtitle: 'Grow your network',
+      label: 'Sanyukt Meter',
+      subtitle: 'The Global Census',
+    ),
+    _CategoryData(
+      label: 'Emergency Action',
+      subtitle: 'The Safety Net',
+    ),
+    _CategoryData(
+      label: 'Sanyukt Varta',
+      subtitle: 'Unified News & Broadcast',
+    ),
+    _CategoryData(
+      label: 'Karya & Vyapar',
+      subtitle: 'The Economic Hub',
       routeName: BusinessTypeSelectionScreen.routeName,
     ),
-    _CategoryData(label: 'JOB / WORK', subtitle: 'Find opportunities'),
-    _CategoryData(label: 'COMMUNITY', subtitle: 'Together we thrive'),
-    _CategoryData(label: 'SPIRITUAL', subtitle: 'Inner peace'),
-    _CategoryData(label: 'MEDICAL', subtitle: 'Health and wellness'),
-    _CategoryData(label: 'MATRIMONY', subtitle: 'Find your match'),
+    _CategoryData(
+      label: 'Spiritual Hub',
+      subtitle: 'The Adhyatmik Center',
+    ),
+    _CategoryData(
+      label: 'Sanyukt Bazaar',
+      subtitle: 'The Ethical Marketplace',
+    ),
+    _CategoryData(
+      label: 'Sanyukt Utsav',
+      subtitle: 'Sports & Pilgrimage Arena',
+    ),
+    _CategoryData(
+      label: 'Sanyukt Pratibha',
+      subtitle: 'Awards & Academic Wing',
+    ),
+    _CategoryData(
+      label: 'Sanyukt Shiksha',
+      subtitle: 'The Global Gurukul',
+    ),
+    _CategoryData(
+      label: 'Sanyukt Bandhan',
+      subtitle: 'Matrimony',
+    ),
   ];
 
   @override

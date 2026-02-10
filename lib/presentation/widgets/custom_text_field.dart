@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../../core/app_theme.dart';
+import 'package:flutter/services.dart';
 
 /// Reusable text field with consistent styling across the app.
 class CustomTextField extends StatelessWidget {
@@ -15,6 +14,8 @@ class CustomTextField extends StatelessWidget {
     this.readOnly = false,
     this.helperText,
     this.suffixIcon,
+    this.inputFormatters,
+    this.maxLength,
   });
 
   final String label;
@@ -26,9 +27,13 @@ class CustomTextField extends StatelessWidget {
   final bool readOnly;
   final String? helperText;
   final Widget? suffixIcon;
+  final List<TextInputFormatter>? inputFormatters;
+  final int? maxLength;
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: TextFormField(
@@ -37,23 +42,25 @@ class CustomTextField extends StatelessWidget {
           labelText: label,
           helperText: helperText,
           suffixIcon: suffixIcon,
+          counterText: maxLength != null ? '' : null,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Colors.grey.shade300),
+            borderSide: BorderSide(color: scheme.outline),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: appPrimary, width: 1.5),
+            borderSide: BorderSide(color: scheme.primary, width: 1.5),
           ),
-          // filled: true,
-          fillColor: readOnly ? Colors.grey.shade100 : null,
+          fillColor: readOnly ? (isDark ? scheme.surfaceContainerHighest : Colors.grey.shade100) : null,
         ),
         maxLines: maxLines,
+        maxLength: maxLength,
         keyboardType: keyboardType,
         readOnly: readOnly,
+        inputFormatters: inputFormatters,
         onChanged: onChanged,
         validator: validator,
       ),

@@ -83,6 +83,11 @@ class ApiClient {
     Map<String, dynamic>? queryParameters,
   }) async {
     try {
+      print('Full URL: ${_dio.options.baseUrl + path}');
+      print('PUT request to $path with data: $data');
+      print('Query parameters: $queryParameters');
+      print('Authorization: ${_localStorage.authToken}');
+      print('Headers: ${_dio.options.headers}');
       return await _dio.put<T>(
         path,
         data: data,

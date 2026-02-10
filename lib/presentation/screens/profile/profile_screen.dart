@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../core/app_theme.dart';
 import '../../../data/models/profile_model.dart';
 import '../../../data/repositories/profile_repository.dart';
 import '../../widgets/responsive_scaffold.dart';
@@ -121,8 +120,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ('City', p.city),
               ('Pincode', p.pincode),
               ('Address', p.fullResidentialAddress),
-              ('Native place – District', p.nativePlaceDistrict),
-              ('Native place – State', p.nativePlaceState),
             ],
           ),
           _buildSection(
@@ -130,16 +127,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
             icon: Icons.groups_outlined,
             items: [
               ('Jain sect', p.jainSect ?? p.jainSectOther),
-              ('Gadh / Gachh / Sampradaya', p.gadhGachhSampradaya),
               ('Mother tongue', p.motherTongue ?? p.motherTongueOther),
-              ('Local Sangh / Samiti', p.localSanghSamitiName),
             ],
           ),
           _buildSection(
             title: 'Education',
             icon: Icons.school_outlined,
             items: [
-              ('Current status', p.currentEducationStatus ?? p.currentEducationStatusOther),
               ('Highest qualification', p.highestQualification ?? p.highestQualificationOther),
               ('Field of study', p.fieldOfStudy ?? p.fieldOfStudyOther),
               ('Institution', p.institutionName),
@@ -171,11 +165,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ('Father\'s occupation', p.fatherOccupation),
               ('Mother\'s name', p.motherName),
               ('Mother\'s occupation', p.motherOccupation),
-              ('Spouse\'s name', p.spouseName),
-              ('Spouse\'s occupation', p.spouseOccupation),
-              ('Number of children', p.numberOfChildren?.toString()),
-              ('Family size', p.familySize?.toString()),
-              ('Family ID', p.familyId),
+              if (p.maritalStatus?.toLowerCase() != 'single') ...[
+                ('Spouse\'s name', p.spouseName),
+                ('Spouse\'s occupation', p.spouseOccupation),
+                ('Number of children', p.numberOfChildren?.toString()),
+              ],
+              ('Total Family Members', p.familySize?.toString()),
             ],
           ),
           _buildSection(
@@ -200,8 +195,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               icon: const Icon(Icons.edit_rounded, size: 20),
               label: const Text('Update profile'),
               style: FilledButton.styleFrom(
-                backgroundColor: appPrimary,
-                foregroundColor: Colors.white,
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                foregroundColor: Theme.of(context).colorScheme.onPrimary,
                 padding: const EdgeInsets.symmetric(vertical: 14),
               ),
             ),
@@ -212,6 +207,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _buildHeader(ProfileModel p, double completion) {
+    final scheme = Theme.of(context).colorScheme;
+    final primary = scheme.primary;
     return Column(
       children: [
         Stack(
@@ -223,18 +220,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: CircularProgressIndicator(
                 value: completion / 100,
                 strokeWidth: 6,
-                backgroundColor: Colors.grey.shade200,
-                valueColor: const AlwaysStoppedAnimation<Color>(appPrimary),
+                backgroundColor: scheme.surfaceContainerHighest,
+                valueColor: AlwaysStoppedAnimation<Color>(primary),
               ),
             ),
             CircleAvatar(
               radius: 40,
-              backgroundColor: appPrimary.withOpacity(0.1),
+              backgroundColor: primary.withOpacity(0.2),
               backgroundImage: p.photoUrl != null && p.photoUrl!.isNotEmpty
                   ? NetworkImage(p.photoUrl!)
                   : null,
               child: p.photoUrl == null || p.photoUrl!.isEmpty
-                  ? Icon(Icons.person_rounded, size: 40, color: appPrimary.withOpacity(0.6))
+                  ? Icon(Icons.person_rounded, size: 40, color: primary.withOpacity(0.7))
                   : null,
             ),
           ],
@@ -244,7 +241,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           p.displayName,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
-                color: Colors.grey.shade900,
+                color: scheme.onSurface,
               ),
           textAlign: TextAlign.center,
         ),
@@ -253,7 +250,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Text(
             p.displayDesignation!,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.grey.shade600,
+                  color: scheme.onSurfaceVariant,
                 ),
           ),
         ],
@@ -261,13 +258,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           decoration: BoxDecoration(
-            color: appPrimary.withOpacity(0.1),
+            color: primary.withOpacity(0.2),
             borderRadius: BorderRadius.circular(20),
           ),
           child: Text(
             '${completion.toStringAsFixed(0)}% complete',
             style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  color: appPrimary,
+                  color: primary,
                   fontWeight: FontWeight.w600,
                 ),
           ),
@@ -281,6 +278,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     required IconData icon,
     required List<(String, String?)> items,
   }) {
+    final scheme = Theme.of(context).colorScheme;
+    final primary = scheme.primary;
     final entries = items
         .where((e) => e.$2 != null && e.$2.toString().trim().isNotEmpty)
         .map((e) => MapEntry(e.$1, e.$2!))
@@ -301,17 +300,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color: appPrimary.withOpacity(0.12),
+                      color: primary.withOpacity(0.2),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Icon(icon, size: 24, color: appPrimary),
+                    child: Icon(icon, size: 24, color: primary),
                   ),
                   const SizedBox(width: 12),
                   Text(
                     title,
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
                           fontWeight: FontWeight.w600,
-                          color: Colors.grey.shade800,
+                          color: scheme.onSurface,
                         ),
                   ),
                 ],
@@ -321,7 +320,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Text(
                   'No information added yet.',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Colors.grey.shade500,
+                        color: scheme.onSurfaceVariant,
                       ),
                 )
               else
@@ -347,6 +346,7 @@ class _ProfileRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: Row(
@@ -357,14 +357,16 @@ class _ProfileRow extends StatelessWidget {
             child: Text(
               label,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Colors.grey.shade600,
+                    color: scheme.onSurfaceVariant,
                   ),
             ),
           ),
           Expanded(
             child: Text(
               value,
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: scheme.onSurface,
+                  ),
             ),
           ),
         ],

@@ -1,8 +1,6 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 
-import '../../core/app_theme.dart';
-
 /// Dropdown with scrollable list, custom height and visible scrollbar.
 class CustomDropdown extends StatelessWidget {
   const CustomDropdown({
@@ -26,6 +24,8 @@ class CustomDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final effectiveValue = value != null && value!.isNotEmpty && options.contains(value!)
         ? value!
         : null;
@@ -43,23 +43,23 @@ class CustomDropdown extends StatelessWidget {
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Colors.grey.shade300),
+            borderSide: BorderSide(color: scheme.outline),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: appPrimary, width: 1.5),
+            borderSide: BorderSide(color: scheme.primary, width: 1.5),
           ),
           filled: true,
-          fillColor: Colors.grey.shade50,
+          fillColor: isDark ? scheme.surfaceContainerHighest : Colors.grey.shade50,
         ),
         dropdownStyleData: DropdownStyleData(
           maxHeight: dropdownMaxHeight,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
-            color: Colors.white,
+            color: isDark ? scheme.surfaceContainerHighest : Colors.white,
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.1),
+                color: Colors.black.withOpacity(isDark ? 0.3 : 0.1),
                 blurRadius: 8,
                 offset: const Offset(0, 4),
               ),
@@ -75,17 +75,16 @@ class CustomDropdown extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         ),
         buttonStyleData: ButtonStyleData(
-          // padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           height: 52,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
-            color: Colors.grey.shade50,
+            color: isDark ? scheme.surfaceContainerHighest : Colors.grey.shade50,
           ),
         ),
         items: [
-          const DropdownMenuItem<String>(
+          DropdownMenuItem<String>(
             value: null,
-            child: Text('Select', style: TextStyle(color: Colors.grey)),
+            child: Text('Select', style: TextStyle(color: scheme.onSurfaceVariant)),
           ),
           ...options.map((o) => DropdownMenuItem<String>(
                 value: o,

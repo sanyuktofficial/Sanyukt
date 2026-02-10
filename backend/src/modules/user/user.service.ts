@@ -12,17 +12,11 @@ const PROFILE_FIELDS: (keyof UserDocument)[] = [
   'city',
   'pincode',
   'fullResidentialAddress',
-  'nativePlaceDistrict',
-  'nativePlaceState',
   'photoUrl',
   'jainSect',
   'jainSectOther',
-  'gadhGachhSampradaya',
   'motherTongue',
   'motherTongueOther',
-  'localSanghSamitiName',
-  'currentEducationStatus',
-  'currentEducationStatusOther',
   'highestQualification',
   'highestQualificationOther',
   'fieldOfStudy',
@@ -50,7 +44,6 @@ const PROFILE_FIELDS: (keyof UserDocument)[] = [
   'spouseOccupation',
   'numberOfChildren',
   'familySize',
-  'familyId',
   'primaryPhone',
   'alternateContactNumber',
   'linkedInProfileLink',
@@ -80,7 +73,6 @@ export async function getUserById(id: string): Promise<UserDocument | null> {
 const OTHER_FIELDS: { main: keyof UserDocument; other: keyof UserDocument }[] = [
   { main: 'jainSect', other: 'jainSectOther' },
   { main: 'motherTongue', other: 'motherTongueOther' },
-  { main: 'currentEducationStatus', other: 'currentEducationStatusOther' },
   { main: 'highestQualification', other: 'highestQualificationOther' },
   { main: 'fieldOfStudy', other: 'fieldOfStudyOther' },
   { main: 'employmentType', other: 'employmentTypeOther' },
@@ -118,6 +110,82 @@ export async function updateUserProfile(
       const otherVal = (body[other] ?? user[other])?.toString().trim();
       if (!otherVal) {
         throw new Error(`Please specify details for "${main}" when "Other" is selected`);
+      }
+    }
+  }
+
+  // Validation: Aadhaar must be exactly 12 digits, no alphabets
+  if (body.aadhaarOrPassport != null) {
+    const aadhaar = body.aadhaarOrPassport.toString().trim();
+    if (aadhaar && !/^\d{12}$/.test(aadhaar)) {
+      throw new Error('Aadhaar Card Number must be exactly 12 digits, no alphabets');
+    }
+  }
+
+  // Validation: Pincode must be exactly 6 digits
+  if (body.pincode != null) {
+    const pincode = body.pincode.toString().trim();
+    if (pincode && !/^\d{6}$/.test(pincode)) {
+      throw new Error('Pincode must be exactly 6 digits, no alphabets');
+    }
+  }
+
+  // Validation: City names - alphabets only
+  if (body.city != null) {
+    const city = body.city.toString().trim();
+    if (city && !/^[a-zA-Z\s]+$/.test(city)) {
+      throw new Error('City must contain only alphabets');
+    }
+  }
+
+  // Validation: Names - alphabets only (fullName, fatherName, motherName, spouseName)
+  for (const key of ['fullName', 'fatherName', 'motherName', 'spouseName'] as const) {
+    if (body[key] != null) {
+      const val = body[key].toString().trim();
+      if (val && !/^[a-zA-Z\s]+$/.test(val)) {
+        throw new Error(`${key.replace(/([A-Z])/g, ' $1').trim()} must contain only alphabets`);
+      }
+    }
+  }
+
+  // Validation: numberOfChildren - single digit 0-9
+  if (body.numberOfChildren != null) {
+    const nc = body.numberOfChildren;
+    if (typeof nc === 'number' && (nc < 0 || nc > 9 || nc !== Math.floor(nc))) {
+      throw new Error('Number of children must be a single digit (0-9)');
+    }
+  }
+
+  // Validation: familySize - two digits max (0-99)
+  if (body.familySize != null) {
+    const fs = body.familySize;
+    if (typeof fs === 'number' && (fs < 0 || fs > 99 || fs !== Math.floor(fs))) {
+      throw new Error('Total Family Members must be 0–99');
+    }
+  }
+
+  // Validation: additionalEmail - valid email format
+  if (body.additionalEmail != null) {
+    const email = body.additionalEmail.toString().trim();
+    if (email && !/^[\w\-.]+@[\w\-]+(\.[\w\-]+)*$/.test(email)) {
+      throw new Error('Please enter a valid email address');
+    }
+  }
+
+  // Validation: alternateContactNumber - valid phone format
+  if (body.alternateContactNumber != null) {
+    const phone = body.alternateContactNumber.toString().trim();
+    if (phone && !/^[0-9+\-\s]{10,15}$/.test(phone)) {
+      throw new Error('Please enter a valid phone number');
+    }
+  }
+
+  // Validation: Social links - URLs only (http or https)
+  for (const key of ['linkedInProfileLink', 'instagramSocialLinks', 'facebook', 'twitter'] as const) {
+    if (body[key] != null) {
+      const val = body[key].toString().trim();
+      if (val && !val.startsWith('http://') && !val.startsWith('https://')) {
+        throw new Error(`${key}: Only valid links (paste http or https URL) allowed`);
       }
     }
   }

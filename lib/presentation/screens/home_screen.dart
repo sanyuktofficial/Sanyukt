@@ -6,6 +6,7 @@ import '../../core/app_theme.dart';
 import '../../logic/auth/auth_cubit.dart';
 import '../widgets/responsive_scaffold.dart';
 import 'audience/audience_categories_screen.dart';
+import 'business/business_type_selection_screen.dart';
 import 'profile/profile_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -102,9 +103,9 @@ class HomeScreen extends StatelessWidget {
                   target: _QuickTarget.audience,
                 ),
                 _QuickChip(
-                  icon: Icons.store_mall_directory,
-                  label: 'Business',
-                  target: _QuickTarget.business,
+                  icon: Icons.business_center_outlined,
+                  label: 'Karya & Vyapar',
+                  target: _QuickTarget.karyaVyapar,
                 ),
                 _QuickChip(
                   icon: Icons.work_outline,
@@ -166,7 +167,7 @@ class _StatCard extends StatelessWidget {
   }
 }
 
-enum _QuickTarget { audience, business, jobs, matrimony }
+enum _QuickTarget { audience, karyaVyapar, jobs, matrimony }
 
 class _QuickChip extends StatelessWidget {
   const _QuickChip({
@@ -189,7 +190,9 @@ class _QuickChip extends StatelessWidget {
           case _QuickTarget.audience:
             context.goNamed(AudienceCategoriesScreen.routeName);
             break;
-          case _QuickTarget.business:
+          case _QuickTarget.karyaVyapar:
+            context.pushNamed(BusinessTypeSelectionScreen.routeName);
+            break;
           case _QuickTarget.jobs:
           case _QuickTarget.matrimony:
             ScaffoldMessenger.of(context).showSnackBar(
